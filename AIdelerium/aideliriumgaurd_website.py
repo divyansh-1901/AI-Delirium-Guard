@@ -49,6 +49,9 @@ st.write("\n")
 st.write("Whether the surgery was elective (planned) or not")
 electsurg = st.selectbox("Whether the surgery was elective (planned) or not", ['Yes', 'No'],label_visibility='collapsed')
 
+st.write("\n")
+st.write("Whether the procedure was performed as an emergency")
+emergncy = st.selectbox("Whether the procedure was performed as an emergency", ['Yes', 'No'],label_visibility='collapsed')
 
 st.write("\n")
 st.write("Height ")
@@ -121,10 +124,6 @@ dpralbum = st.number_input("Blood test result for albumin levels", step=1,label_
 st.write("\n")
 st.write("Blood test result for hematocrit levels")
 dprhct = st.number_input("Blood test result for hematocrit levels", step=1,label_visibility='collapsed')
-
-st.write("\n")
-st.write("Whether the procedure was performed as an emergency")
-emergncy = st.selectbox("Whether the procedure was performed as an emergency", ['Yes', 'No'],label_visibility='collapsed')
 
 st.write("\n")
 st.write("Deep renal insufficiency")
