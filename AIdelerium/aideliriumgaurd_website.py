@@ -4,64 +4,131 @@ import pandas as pd
 
 st.write("# AI-Delirium Guard")
 
-sex = st.selectbox("Enter patient's gender", ["Male", "Female"])
+st.write("\n")
+st.write("Gender")
+sex = st.selectbox("Gender", ["Male", "Female"],label_visibility='collapsed')
 
+st.write("\n")
+st.write("Whether the patient was admitted as an inpatient or treated as an outpatient")
 inout = st.selectbox("Whether the patient was admitted as an inpatient or treated as an outpatient",
-                     ["Inpatient", "Outpatient"])
+                     ["Inpatient", "Outpatient"],label_visibility='collapsed')
 
-transt = st.selectbox("Whether the patient was transferred from some hospital?",
+st.write("\n")
+st.write("Whether the patient was transferred")
+transt = st.selectbox("Whether the patient was transferred",
                       ['Not transferred (admitted from home)', 'From acute care hospital inpatient',
-                       'Outside emergency department', 'Other'])
+                       'Outside emergency department', 'Other'],label_visibility='collapsed')
 
-age = st.number_input("Enter patient's age", step=1)
+st.write("\n")
+st.write("Age")
+age = st.number_input("Age", step=1,label_visibility='collapsed')       # unit: years
 
+st.write("\n")
+st.write("Destination after discharge from the hospital")
 dischdest = st.selectbox("Destination after discharge from the hospital",
-                         ['Home', 'Other', 'Rehab', 'Skilled Care, Not Home'])
+                         ['Home', 'Other', 'Rehab', 'Skilled Care, Not Home'],label_visibility='collapsed')
 
+st.write("\n")
+st.write("Type of anesthesia used during the procedure")
 anesthes = st.selectbox("Type of anesthesia used during the procedure",
-                        ['General', 'MAC/IV Sedation', 'Spinal', 'Other'])
+                        ['General', 'MAC/IV Sedation', 'Spinal', 'Other'],label_visibility='collapsed')
 
-surgspec = st.selectbox("Medical specialty of the surgeon performing the procedure",
-                        ['Urology', 'Orthopedics', 'General Surgery',
-                         'Neurosurgery', 'Thoracic', 'Otolaryngology (ENT)',
-                         'Vascular', 'Plastics', 'Cardiac Surgery', 'Gynecology'])
+st.write("\n")
+st.write("Type of Surgery Performed")
+surgspec = st.selectbox("Type of Surgery Performed",
+                        ['Urology Surgery', 'Orthopaedic Surgery', 'General Surgery',
+                         'Neurosurgery', 'Thoracic Surgery', 'Head and Neck Surgery (ENT)',
+                         'Vascular Surgery', 'Plastic Surgery', 'Cardiac Surgery', 'Gynecology Surgery'],
+                        label_visibility='collapsed')
 
-electsurg = st.selectbox("Whether the surgery was elective (planned) or not", ['Yes', 'No'])
+st.write("\n")
+st.write("Duration of Surgery")
+optime = st.number_input("Duration of Surgery", step=1,label_visibility='collapsed')    # units ?
 
-height = st.number_input("Enter patient's height", step=1)
+st.write("\n")
+st.write("Whether the surgery was elective (planned) or not")
+electsurg = st.selectbox("Whether the surgery was elective (planned) or not", ['Yes', 'No'],label_visibility='collapsed')
 
-weight = st.number_input("Enter patient's weight", step=1)
 
-diabetes = st.selectbox("Whether the patient has diabetes",
-                        ['NO', 'NON-INSULIN', 'INSULIN'])
+st.write("\n")
+st.write("Height ")
+col1,col2,col3,col4 = st.columns([3,1,3,1])
+feet = col1.number_input("Height_feet ", step=1,min_value=0,label_visibility='collapsed',format='%i')
+col2.write("Feet")
+inches = col3.number_input("Height_inches ", step=1,label_visibility='collapsed',min_value=0,max_value=11,format='%i')
+col4.write("Inches")
+height = 12*feet + inches
 
-smoke = st.selectbox("Whether the patient is a smoker", ['Yes', 'No'])
+st.write("\n")
+st.write("Weight")
+col1,col2 = st.columns([7,1])
+weight_type = col1.selectbox("Weight_type", ['Pounds', 'Kg'],label_visibility='collapsed')
+if weight_type=='Kg':
+    col1,col2 = st.columns([7,1])
+    weight_kg = col1.number_input("Weight_kg", step=1.0,min_value=0.0,label_visibility='collapsed',)
+    col2.write("Kg")
+    weight = 2.20462*weight_kg
+elif weight_type=='Pounds':
+    col1,col2 = st.columns([7,1])
+    weight_pounds = col1.number_input("Weight_kg", step=1.0,min_value=0.0,label_visibility='collapsed')
+    col2.write("Pounds")
+    weight = weight_pounds
 
-dyspnea = st.selectbox("Difficulty in breathing, if present or not",
-                       ['No', 'MODERATE EXERTION', 'AT REST'])
 
-discancr = st.selectbox("Diagnosis of cancer", ['Yes', 'No'])
+st.write("\n")
+st.write("Whether the patient has diabetes? If yes, is the patient on Insulin?")
+diabetes = st.selectbox("Whether the patient has diabetes? If yes, is the patient on Insulin?",
+                        ['NO', 'NON-INSULIN', 'INSULIN'],label_visibility='collapsed')
 
-wndinf = st.selectbox("Presence of wound infection", ['Yes', 'No'])
+st.write("\n")
+st.write("Whether the patient is a smoker")
+smoke = st.selectbox("Whether the patient is a smoker", ['Yes', 'No'],label_visibility='collapsed')
 
-steroid = st.selectbox("Use of steroids as part of treatment", ['Yes', 'No'])
+st.write("\n")
+st.write("Difficulty in breathing, if present or not. If yes, is it on moderate excretion or at rest?")
+dyspnea = st.selectbox("Difficulty in breathing, if present or not. If yes, is it on moderate excretion or at rest?",
+                       ['NO', 'MODERATE EXERTION', 'AT REST'],label_visibility='collapsed')
 
+st.write("\n")
+st.write("Has the patient been diagnosed with cancer?")
+discancr = st.selectbox("Has the patient been diagnosed with cancer?", ['Yes', 'No'],label_visibility='collapsed')
+
+st.write("\n")
+st.write("Classification of wound type (e.g., clean, contaminated)")
 wndclas = st.selectbox("Classification of wound type (e.g., clean, contaminated)",
-                       ['2-Clean/Contaminated', '1-Clean', '4-Dirty/Infected', '3-Contaminated'])
+                       ['2-Clean/Contaminated', '1-Clean', '4-Dirty/Infected', '3-Contaminated'],label_visibility='collapsed')
 
-prsepis = st.selectbox("Presence of sepsis", ['Yes', 'No'])
+st.write("\n")
+st.write("Presence of wound infection")
+wndinf = st.selectbox("Presence of wound infection", ['Yes', 'No'],label_visibility='collapsed')
 
-dprna = st.number_input("Blood test result for sodium levels", step=1)
+st.write("\n")
+st.write("Use of steroids as part of treatment")
+steroid = st.selectbox("Use of steroids as part of treatment", ['Yes', 'No'],label_visibility='collapsed')
 
-dpralbum = st.number_input("Blood test result for albumin levels", step=1)
+st.write("\n")
+st.write("Presence of sepsis")
+prsepis = st.selectbox("Presence of sepsis", ['Yes', 'No'],label_visibility='collapsed')
 
-dprhct = st.number_input("Blood test result for hematocrit levels", step=1)
+st.write("\n")
+st.write("Blood test result for sodium levels")
+dprna = st.number_input("Blood test result for sodium levels", step=1,label_visibility='collapsed')
 
-emergncy = st.selectbox("Whether the procedure was performed as an emergency", ['Yes', 'No'])
+st.write("\n")
+st.write("Blood test result for albumin levels")
+dpralbum = st.number_input("Blood test result for albumin levels", step=1,label_visibility='collapsed')
 
-optime = st.number_input("Duration of the operation (surgery time)", step=1)
+st.write("\n")
+st.write("Blood test result for hematocrit levels")
+dprhct = st.number_input("Blood test result for hematocrit levels", step=1,label_visibility='collapsed')
 
-drenainsf = st.number_input("Deep renal insufficiency", step=1)
+st.write("\n")
+st.write("Whether the procedure was performed as an emergency")
+emergncy = st.selectbox("Whether the procedure was performed as an emergency", ['Yes', 'No'],label_visibility='collapsed')
+
+st.write("\n")
+st.write("Deep renal insufficiency")
+drenainsf = st.number_input("Deep renal insufficiency", step=1,label_visibility='collapsed')
 
 df_pred = pd.DataFrame([[sex, inout, transt, age, dischdest, anesthes, surgspec, electsurg, height, weight, diabetes,
                          smoke, dyspnea, discancr, wndinf, steroid, wndclas, prsepis, dprna, dpralbum, dprhct, emergncy,
@@ -97,16 +164,16 @@ def anesthes_transform(data):
 
 
 def surgspec_transform(data):
-    x = {'Urology': '0',
-         'Orthopedics': '1',
+    x = {'Urology Surgery': '0',
+         'Orthopaedic Surgery': '1',
          'General Surgery': '2',
          'Neurosurgery': '3',
-         'Thoracic': '4',
-         'Otolaryngology (ENT)': '5',
-         'Vascular': '6',
-         'Plastics': '7',
+         'Thoracic Surgery': '4',
+         'Head and Neck Surgery (ENT)': '5',
+         'Vascular Surgery': '6',
+         'Plastic Surgery': '7',
          'Cardiac Surgery': '8',
-         'Gynecology': '9'}
+         'Gynecology Surgery': '9'}
     return int(x[data])
 
 
@@ -118,7 +185,7 @@ def diabetes_transform(data):
 
 
 def dyspnea_transform(data):
-    x = {'No': '0',
+    x = {'NO': '0',
          'MODERATE EXERTION': '1',
          'AT REST': '2'}
     return int(x[data])
